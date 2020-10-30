@@ -1,0 +1,13 @@
+@startuml
+class Aggregator
+class Sensor
+class Receptionist
+
+class MessageAdapter
+
+Aggregator --> Receptionist
+
+Receptionist --> MessageAdapter : Receptionist.Listing
+MessageAdapter --> Sensor: Sensor.Command
+
+@enduml
