@@ -1,0 +1,45 @@
+@startuml
+
+interface Aggregator.Command
+
+class Aggregator.SendTemperature
+
+Aggregator.Command <|-- Aggregator.SendTemperature
+
+
+interface Sensor.Command
+
+class Sensor.TriggerMeasurement
+class Sensor.HandleListing
+
+Sensor.HandleListing .. Receptionist.Listing
+
+Receptionist.Listing <<Message>>
+Receptionist.Register <<Message>>
+
+Sensor.Command <|-- Sensor.TriggerMeasurement
+Sensor.Command <|-- Sensor.HandleListing
+
+class Aggregator << (A,red) actor>>
+
+class Sensor << (A,red) actor>>
+class Receptionist <<(A,gray) akka>>
+
+MessageAdapter <<Akka>>
+
+Sensor ->  Sensor #line:blue;line.bold;text:blue : "TriggerMeasurement"
+Sensor -->  Aggregator #line:blue;line.bold;text:blue : "SendTemperature"
+
+Receptionist -> MessageAdapter #line:blue;line.bold;text:blue : "Receptionist.Listing"
+MessageAdapter -> Sensor #line:blue;line.bold;text:blue : "Sensor.HandleListing"
+
+
+Aggregator ->  Receptionist #line:blue;line.bold;text:blue : "Receptionist.Register"
+
+hide <<Message>> circle
+
+skinparam class {
+	BackgroundColor<<Akka>> white
+	BorderColor<<Akka>> white
+}
+@enduml
